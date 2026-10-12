@@ -1,0 +1,204 @@
+
+Demonstrate knowledge flow application on data sets into Weka/R
+Develop a knowledge flow layout for finding strong association rules by using Apriori, FP Growth algorithms 
+Set up the knowledge flow to load an ARFF (batch mode) and perform a cross validation using J48 algorithm 
+Demonstrate plotting multiple ROC curves in the same plot window by using j48 and Random forest tree
+Develop a knowledge flow layout for finding strong association rules by using Apriori, FP Growth algorithms 
+1.Open Knowledge Flow
+Go to Tools → Knowledge Flow in Weka.
+
+
+
+
+
+
+
+2. Load the dataset
+
+
+
+
+
+
+
+
+From the Design panel click DataSources → ArffLoader and click on the canvas to place it.
+Right-click the ArffLoader → Configure → browse and select your ARFF file.
+
+   3. From Design → Filters → unsupervised → attribute choose Discretize and place it on the canvas.
+Right-click ArffLoader → choose dataSet connection → click the Discretize node to connect dataSet → Discretize.
+Configure Discretize (right-click → Configure): pick number of bins or use default.
+4. From Design → Associators pick Apriori and place it on the canvas. Also add FPGrowth (both under Associators).
+Right-click the Discretize (or ArffLoader if no filter) → select dataSet → click Apriori (connect dataset to Apriori).
+Repeat to connect same dataset to FPGrowth (so both get the same input in parallel).
+5. Add two Visualization → TextViewer nodes (one per associator) to capture textual output.
+Right-click Apriori → select text → click the TextViewer to connect.
+Right-click FPGrowth → select text → connect to the other TextViewer.
+6. Configure Apriori (right-click → Configure):
+Useful options: numRules (-N) = how many rules to output (default 10), minMetric (-C) = min confidence (default 0.9)
+7. Configure FPGrowth (right-click → Configure):
+It has options for minSupport and numRules too — for dense datasets set minSupport higher; for sparse datasets lower it. Remember FPGrowth finds frequent itemsets.
+
+8. Press the play (Execute flow) button on the toolbar.
+
+9. When finished, right-click each TextViewer → Show results to see the list of frequent itemsets and association rules. Interpret the rules by support and confidence.
+Apriori will list frequent itemsets and then rules with metrics (support, confidence).
+
+
+FPGrowth will list frequent itemsets and rules similarly
+
+
+
+Set up the knowledge flow to load an ARFF (batch mode) and perform a cross validation using J48 algorithm 
+1. 1.Open Knowledge Flow
+Go to Tools → Knowledge Flow in Weka.
+
+
+
+
+
+
+
+
+
+
+      2.Load the dataset.
+From the Design panel click DataSources → ArffLoader and click on the canvas to place it.
+Right-click the ArffLoader → Configure → browse and select your ARFF file.
+
+
+
+3. Evaluation → ClassAssigner → place on canvas.
+Right-click ArffLoader → select dataSet → click ClassAssigner to connect.
+Right-click ClassAssigner → Configure → set which attribute is the class (default last).
+4. Evaluation → CrossValidationFoldMaker → place on canvas.
+Right-click ClassAssigner → dataSet → click CrossValidationFoldMaker to connect.
+Configure CrossValidationFoldMaker if you want different number of folds (default 10).
+5.  Classifiers → trees → J48 → place on canvas.
+Right-click CrossValidationFoldMaker → choose trainingSet → click J48 (connect).
+Again right-click CrossValidationFoldMaker → choose testSet → click J48 (this creates two connections: trainingSet & testSet).
+6. Evaluation → ClassifierPerformanceEvaluator → place on canvas.
+Right-click J48 → select batchClassifier → click ClassifierPerformanceEvaluator to connect.
+7.  Visualization → TextViewer → place on canvas.
+Right-click ClassifierPerformanceEvaluator → select text → connect to TextViewer.
+
+
+
+8. Press the play (Execute flow) button on the toolbar.
+
+
+
+9. Right-click the TextViewer → Show results. You will see cross-validation summary, fold results, confusion matrix, per-class metrics and global metrics (accuracy, kappa, etc.).
+
+Demonstrate plotting multiple ROC curves in the same plot window by using j48 and Random forest tree
+1.Start a fresh KnowledgeFlow canvas.
+Go to Tools → Knowledge Flow in Weka.
+
+
+
+
+
+
+
+
+
+
+    
+  2.Load the dataset.
+From the Design panel click DataSources → ArffLoader and click on the canvas to place  it.
+Right-click the ArffLoader → Configure → browse and select your ARFF file.
+
+3. Evaluation → ClassAssigner → place on canvas.
+Right-click ArffLoader → select dataSet → click ClassAssigner to connect.
+Right-click ClassAssigner → Configure → set which attribute is the class (default last).
+4. Evaluation → CrossValidationFoldMaker → place on canvas.
+Right-click ClassAssigner → dataSet → click CrossValidationFoldMaker to connect.
+Configure CrossValidationFoldMaker if you want different number of folds (default 10).
+5.  Classifiers → trees → J48 → place on canvas.
+Right-click CrossValidationFoldMaker → choose trainingSet → click J48 (connect).
+Again right-click CrossValidationFoldMaker → choose testSet → click J48 (this creates two connections: trainingSet & testSet).
+6. Evaluation → ClassifierPerformanceEvaluator → place on canvas.
+   Right-click J48 → select batchClassifier → click ClassifierPerformanceEvaluator to connect.
+7. Visualization → TextViewer → place on canvas.
+     Right-click ClassifierPerformanceEvaluator → select text → connect to TextViewer.
+
+
+8. Press the play (Execute flow) button on the toolbar.
+
+
+9. Right-click the TextViewer → Show results. You will see cross-validation summary, fold results, confusion matrix, per-class metrics and global metrics (accuracy, kappa, etc.).
+
+
+
+
+
+
+
+
+
+
+
+
+Demonstrate plotting multiple ROC curves in the same plot window by using j48 and Random forest tree
+1.Start a fresh KnowledgeFlow canvas.
+Go to Tools → Knowledge Flow in Weka.
+
+
+
+
+
+
+
+
+      2.Load the dataset.
+       From the Design panel click DataSources → ArffLoader and click on the canvas to place  it.
+
+
+       Right-click the ArffLoader → Configure → browse and select your ARFF      file.(eg.,vote.arff)
+3. Evaluation→ ClassAssigner → place on canvas.
+Right-click ArffLoader → select dataSet → click ClassAssigner to connect.
+4. Evaluation→ CrossValidationFoldMaker → place on canvas.
+Right-click ClassAssigner → select dataSet → click CrossValidationFoldMaker to connect.
+5.  Classifiers → trees → J48 → place on canvas.
+  Right-click CrossValidationFoldMaker → trainingSet → J48.
+  Right-click CrossValidationFoldMaker → testSet → J48.
+6. Classifiers → trees → RandomForest → place on canvas.
+  Right-click CrossValidationFoldMaker → trainingSet → RandomForest.
+  Right-click CrossValidationFoldMaker → testSet → RandomForest.
+7.   Evaluation → ClassifierPerformanceEvaluator, place on canvas.
+  Right-click J48 → batchClassifier → ClassifierPerformanceEvaluator.
+8.Add another ClassifierPerformanceEvaluator.
+ Evaluation → ClassifierPerformanceEvaluator, place on canvas.
+ Right-click RandomForest → batchClassifier → ClassifierPerformanceEvaluator.
+9. Add ModelPerformanceChart and connect thresholdData
+From Visualization → ModelPerformanceChart, place on canvas.
+Right-click ClassifierPerformanceEvaluator (1) → thresholdData → click ModelPerformanceChart.
+Right-click ClassifierPerformanceEvaluator (2) → thresholdData → click the same ModelPerformanceChart
+10.  Visualization → TextViewer, place two TextViewer nodes.
+ Right-click J48 → text → TextViewer (1).
+  Right-click RandomForest → text → TextViewer (2).
+
+
+8. Press the play (Execute flow) button on the toolbar.
+Wait until nodes (ArffLoader, evaluators, TextViewers, ModelPerformanceChart) finish / turn green.
+
+
+	
+
+Right-click TextViewer (J48) → Show results.
+You will see accuracy, confusion matrix, and AUC for J48.
+
+
+Right-click TextViewer (RandomForest) → Show results.
+You will see accuracy, confusion matrix, and AUC for RandomForest.
+
+ Right-click on the ModelPerformanceChart node.
+Select Show plot (or sometimes Show chart depending on version).
+A window will appear showing two ROC curves:
+J48 ROC curve (in one color, e.g., blue).
+RandomForest ROC curve (in another color, e.g., red).
+
+
+
+
+Gemini Notebook can ma
